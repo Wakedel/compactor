@@ -1,0 +1,50 @@
+research_task:
+  description: >
+    Conduct a thorough analysis of the available sources of 
+    informations in order to help the user understand 
+    the main topics it deals with.
+
+    Use every sources of information provided below: 
+      {sources}
+    
+    Take into account the user's intuitions and find 
+    information that confirms or contradicts their ideas:
+      {intuition}
+    
+    Find informations that may help answer the user's questions:
+      {questions}
+  expected_output: >
+    A list with bullet points of the most relevant information.
+    Whenever possible, cross-reference sources to improve the accuracy and completness.
+    Everything you write must be accompanied by the source of the information you used
+    (ideally link to the associated webpage).
+  agent: researcher
+
+reporting_task:
+  description: >
+    Write a three parts reports:
+    - Review the context you got and expand each topic into a full section 
+      for a report, without making any asumptions and always providing the 
+      source of the information you use.
+      Make sure the report is detailed and contains any and all relevant information
+      that may allow the user understand the main topics.
+    
+    - Provide an argumented answer to the user's intuition (don't hesitate to
+      tell him if he was wrong):
+        {intuition}
+    
+    - Try your best to answer the user's questions (if you cannot using available 
+      information, just write it down):
+        {questions}
+  expected_output: >
+    A structured report (in Markdown format) made up of three clearly separate parts: 
+      - A fully fledged report with the main topics, each with a full section of information.
+        This section must allow the user to understand what the provided sources of information
+        contain.
+      - If an intuition was provided, a section labelled "Answer to intuition" must be provided.
+      - If questions were formulated by the user, a section labelled "Answer to questions" must
+        be provided (don't forget to write every question before the associated answer).
+    Everything you write must be accompanied by the source of the information you used
+    (ideally link to the associated webpage).
+    Whenever possible, cross-reference sources to improve the accuracy and completness.
+  agent: reporting_analyst
