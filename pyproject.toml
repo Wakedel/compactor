@@ -9,13 +9,6 @@ dependencies = [
     "crewai[tools]>=0.100.0,<1.0.0"
 ]
 
-[project.scripts]
-compactor = "compactor.main:run"
-run_crew = "compactor.main:run"
-train = "compactor.main:train"
-replay = "compactor.main:replay"
-test = "compactor.main:test"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
