@@ -1,6 +1,4 @@
-chromadb
-pysqlite3-binary
-pysqlite3
+sqlalchemy
 streamlit>=1.28.0
 crewai>=0.11.0
 crewai-tools>=0.0.7
