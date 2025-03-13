@@ -1,11 +1,12 @@
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import ScrapeWebsiteTool, YoutubeVideoSearchTool, WebsiteSearchTool
+from crewai_tools import ScrapeWebsiteTool #YoutubeVideoSearchTool, WebsiteSearchTool
 
 import os
 
 os.environ["MODEL"] = 'gemini/gemini-2.0-flash'
 
+"""
 WebSiteRAG = lambda key : WebsiteSearchTool(
     config=dict(
         llm=dict(
@@ -51,6 +52,7 @@ YoutubeVideoRAG = lambda key : YoutubeVideoSearchTool(
         ),
     )
 )
+"""
 
 # If you want to run a snippet of code before or after the crew starts, 
 # you can use the @before_kickoff and @after_kickoff decorators
@@ -73,8 +75,8 @@ class Compactor():
 					api_key=llm_key,
 					temperature=0.0,
 					)
-		self.WebSiteRAG = WebSiteRAG(llm_key)
-		self.YoutubeVideoRAG = YoutubeVideoRAG(llm_key)
+		#self.WebSiteRAG = WebSiteRAG(llm_key)
+		#self.YoutubeVideoRAG = YoutubeVideoRAG(llm_key)
 		
 
 	# If you would like to add tools to your agents, you can learn more about it here:
