@@ -85,7 +85,7 @@ class Compactor():
 			config=self.agents_config['researcher'],
 			verbose=True,
 			llm=self.llm,
-			tools=[ScrapeWebsiteTool(), self.YoutubeVideoRAG, self.WebSiteRAG]
+			tools=[ScrapeWebsiteTool()]#, self.YoutubeVideoRAG, self.WebSiteRAG]
 		)
 
 	@agent
