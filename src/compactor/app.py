@@ -274,8 +274,10 @@ if st.session_state.api_key_validated:
                     }
                 )
                 
+                result = str(result).replace("```md","").replace("```markdown","").replace("```","")
+
                 # Store the generated report in session state
-                st.session_state.generated_report = str(result).replace("```md","").replace("```","")
+                st.session_state.generated_report = str(result)
 
                 # Display the report
                 st.markdown("## 📊 Analysis Report")

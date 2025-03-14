@@ -102,6 +102,17 @@ class Compactor():
 			verbose=True
 		)
 
+	@agent
+	def manager(self) -> Agent:
+		return Agent(
+			role="Project Manager",
+			goal="Efficiently manage the crew to make sure every source of information is used and ensure high-quality task completion",
+			backstory="You're an experienced project manager, skilled in overseeing complex projects and guiding teams to success.",
+			allow_delegation=True,
+			llm=self.llm,
+			verbose=True
+		)
+
 	# To learn more about structured task outputs, 
 	# task dependencies, and task callbacks, check out the documentation:
 	# https://docs.crewai.com/concepts/tasks#overview-of-a-task
@@ -124,12 +135,23 @@ class Compactor():
 		# To learn how to add knowledge sources to your crew, check out the documentation:
 		# https://docs.crewai.com/concepts/knowledge#what-is-knowledge
 
+		"""
 		return Crew(
-			agents=self.agents, # Automatically created by the @agent decorator
+			agents=self.agents[:(-1)], # Automatically created by the @agent decorator
 			tasks=self.tasks, # Automatically created by the @task decorator
-			process=Process.sequential,
+			#process=Process.sequential,
 			verbose=True,
 			max_rpm=30,
-			chat_llm="gemini/gemini-2.0-flash",  # LLM for chat orchestration,
-			# process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
+			process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
+			planning=True, 
+			manager_agent=self.manager(),
+			manager_llm=self.llm,
+			planning_llm=self.llm,
+		"""
+		return Crew(
+			agents=[self.researcher(), self.reporting_analyst()],
+			tasks=[self.research_task(), self.reporting_task()],
+			verbose=True,
+			max_rpm=30,
+			process=Process.sequential, # In case you wanna use that instead  URL_ADDRESS.crewai.com/how-to/Hierarchical/	
 		)
