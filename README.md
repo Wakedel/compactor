@@ -16,8 +16,9 @@ An AI-powered document analysis and synthesis system built with CrewAI and Strea
 
 - Python 3.10 or higher
 - Google Gemini API key
+- Conda (recommended)
 
-## Installations 
+## Installation
 
 1. Clone the repository:
 ```bash
@@ -25,7 +26,12 @@ git clone https://github.com/yourusername/compactor.git
 cd compactor
 ```
 
-2. Install dependencies:
+2. Create conda environment:
+```bash
+conda create -n compactor python=3.12.8
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
