@@ -16,6 +16,7 @@ research_task:
   expected_output: >
     A list with bullet points of the most relevant information.
     Whenever possible, cross-reference sources to improve the accuracy and completness.
+    Every provided source should be used to build your answer.
     Everything you write must be accompanied by the source of the information you used
     (ideally link to the associated webpage).
   agent: researcher
@@ -38,7 +39,8 @@ reporting_task:
         {questions}
   expected_output: >
     A structured report (in Markdown format) made up of three clearly separate parts: 
-      - A fully fledged report with the main topics, each with a full section of information.
+      - A sectoin labelled "Report" must be provided
+        It is a a fully fledged report with the main topics, each with a full section of information.
         This section must allow the user to understand what the provided sources of information
         contain.
       - If an intuition was provided, a section labelled "Answer to intuition" must be provided.

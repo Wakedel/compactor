@@ -11,6 +11,22 @@ from io import BytesIO
 import base64
 import google.generativeai as genai
 
+def clean_duplicate_urls(text):
+    """
+    Clean markdown links that have duplicate URLs
+    Example: [text]([url](url)) -> [text](url)
+    """
+    import re
+    
+    pattern = r'\[([^\]]+)\]\((\[.*?\])?\s*(https?://[^\s\)]+)\s*(?:\]\([^\)]+\))?\)'
+    
+    def replace_match(match):
+        text = match.group(1)
+        url = match.group(3)
+        return url
+    
+    return re.sub(pattern, replace_match, text)
+
 # Function to convert Markdown to PDF
 def markdown_to_pdf(markdown_text):
     print(markdown_text)
@@ -43,6 +59,15 @@ def markdown_to_pdf(markdown_text):
             borderWidth=1,
             borderPadding=8
         ),
+        'CustomH3': ParagraphStyle(  # Add H3 style
+            'CustomH3',
+            parent=styles['Heading3'],
+            fontSize=12,
+            spaceAfter=15,
+            leftIndent=30,  # More indentation than H2
+            textColor=colors.HexColor('#34495e'),
+            borderPadding=5
+        ),
         'CustomCode': ParagraphStyle(
             'CustomCode',
             parent=styles['Code'],
@@ -61,13 +86,30 @@ def markdown_to_pdf(markdown_text):
     }
 
     try:
+        #clean urls
+        markdown_text = clean_duplicate_urls(markdown_text)
+
         # Split text into paragraphs
-        paragraphs = markdown_text.split('\n\n')
+        paragraphs = markdown_text.split('\n')#\n')
         
         for para in paragraphs:
             if not para.strip():
                 continue
 
+            # Handle headers and regular paragraphs
+            if para.startswith('# '):
+                text = para[2:]
+                style = custom_styles['CustomH1']
+            elif para.startswith('## '):
+                text = para[3:]
+                style = custom_styles['CustomH2']
+            elif para.startswith('### '):  # Add H3 handling
+                text = para[4:]
+                style = custom_styles['CustomH3']
+            else:
+                text = para
+                style = styles['Normal']
+            
             # Handle code blocks
             if para.startswith('```'):
                 code_lines = para.split('\n')[1:-1]  # Remove ``` lines
@@ -89,17 +131,6 @@ def markdown_to_pdf(markdown_text):
                         story.append(Paragraph(bullet_text, custom_styles['CustomList']))
                 story.append(Spacer(1, 6))
                 continue
-
-            # Handle headers and regular paragraphs
-            if para.startswith('# '):
-                text = para[2:]
-                style = custom_styles['CustomH1']
-            elif para.startswith('## '):
-                text = para[3:]
-                style = custom_styles['CustomH2']
-            else:
-                text = para
-                style = styles['Normal']
             
             # Handle inline formatting
             text = text.replace('**', '<b>', 1).replace('**', '</b>', 1)  # Bold
@@ -274,14 +305,16 @@ if st.session_state.api_key_validated:
                     }
                 )
                 
-                result = str(result).replace("```md","").replace("```markdown","").replace("```","")
+                result = str(result).replace("```md\n","").replace("```md","").replace("```markdown\n","").replace("```markdown","").replace("```","")
 
                 # Store the generated report in session state
                 st.session_state.generated_report = str(result)
 
+                #"""
                 # Display the report
-                st.markdown("## 📊 Analysis Report")
-                st.markdown(str(result))
+                #st.markdown("## 📊 Analysis Report")
+                #st.markdown(str(result))
+                #"""
 
                 # Cleanup temporary files
                 for temp_file in temp_files:
@@ -292,6 +325,11 @@ if st.session_state.api_key_validated:
 
     # Add PDF export button if report is generated
     if st.session_state.generated_report:
+        # Display the report first
+        st.markdown("## 📊 Analysis Report")
+        st.markdown(st.session_state.generated_report)
+        
+        # Then show the export button
         if st.button("Export to PDF", type="secondary"):
             with st.spinner("Converting to PDF..."):
                 md = str(st.session_state.generated_report)
