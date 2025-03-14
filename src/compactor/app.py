@@ -236,17 +236,22 @@ if st.session_state.api_key_validated:
             help="What specific questions would you like answered?"
         )
 
+    # Create a custom temp directory in your project
+    TEMP_DIR = "temp"
+    if not os.path.exists(TEMP_DIR):
+        os.makedirs(TEMP_DIR)
+    
     # Process button
     if st.button("Generate Report", type="primary"):
         if not (uploaded_files or urls.strip()):
             st.error("Please provide at least one document or URL to analyze")
         else:
             with st.spinner("Analyzing documents and generating report..."):
-                # Save uploaded files to temporary location
+                # Save uploaded files to custom temporary location
                 temp_files = []
                 if uploaded_files:
                     for file in uploaded_files:
-                        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
+                        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf', dir=TEMP_DIR) as tmp_file:
                             tmp_file.write(file.getvalue())
                             temp_files.append(tmp_file.name)
 
@@ -255,7 +260,7 @@ if st.session_state.api_key_validated:
 
                 # Prepare sources string
                 sources = []
-                sources.extend([f"PDF: {os.path.basename(f)}" for f in temp_files])
+                sources.extend([f"PDF: temp/{os.path.basename(f)}" for f in temp_files])
                 sources.extend([f"URL: {url}" for url in url_list])
                 sources_str = '\n'.join(sources)
 

@@ -1,8 +1,10 @@
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import ScrapeWebsiteTool #YoutubeVideoSearchTool, WebsiteSearchTool
+from crewai_tools import ScrapeWebsiteTool, DirectoryReadTool #YoutubeVideoSearchTool, WebsiteSearchTool
 
 import os
+
+from src.compactor.tools.custom_tool import PdfReaderTool
 
 os.environ["MODEL"] = 'gemini/gemini-2.0-flash'
 
@@ -87,7 +89,9 @@ class Compactor():
 			config=self.agents_config['researcher'],
 			verbose=True,
 			llm=self.llm,
-			tools=[ScrapeWebsiteTool()]#, self.YoutubeVideoRAG, self.WebSiteRAG]
+			tools=[ScrapeWebsiteTool(), 
+				   PdfReaderTool(),
+				   DirectoryReadTool(directory="temp")]#, self.YoutubeVideoRAG, self.WebSiteRAG]
 		)
 
 	@agent

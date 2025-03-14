@@ -8,22 +8,26 @@ An AI-powered document analysis and synthesis system built with CrewAI and Strea
 - 🔗 URL analysis capabilities
 - 💡 Intuition validation
 - ❓ Question answering
-- 📊 Comprehensive report generation
+- 📊 Comprehensive report generation with PDF export
 - 🎨 Modern, clean interface
+- 🔒 Secure API key management
 
-## Setup
+## Prerequisites
 
-1. Install dependencies:
+- Python 3.10 or higher
+- Google Gemini API key
+
+## Installations 
+
+1. Clone the repository:
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/yourusername/compactor.git
+cd compactor
 ```
 
-2. Set up your Google API key:
-- Get a Google API key from the Google Cloud Console
-- Set the environment variable:
+2. Install dependencies:
 ```bash
-export GEMINI_API_KEY='your-api-key'
-export GOOGLE_API_KEY='your-api-key'
+pip install -r requirements.txt
 ```
 
 ## Running the Application
