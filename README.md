@@ -38,6 +38,11 @@ pip install -r requirements.txt
 
 ## Running the Application
 
+Activate your conda environment:
+```bash
+conda activate compactor
+```
+
 Start the application with:
 ```bash
 streamlit run src/app.py
